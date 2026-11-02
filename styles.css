@@ -266,6 +266,7 @@ body {
 
 .btn:active {
   transform: translateY(0) scale(0.98);
+  transition-duration: var(--transition-fast);
 }
 
 /* ==========================================
@@ -349,20 +350,17 @@ section {
 }
 
 .image-overlay {
-
-  /* TODO: Add overlay effect on hover */
-  .image-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-    opacity: 0;
-    transition: opacity var(--transition-base);
-  }
-
-  .project-card:hover .image-overlay {
-    opacity: 1;
-  }
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
+
+.project-card:hover .image-overlay {
+  opacity: 1;
+}
+
 
 .project-card h3 {
   padding: var(--spacing-md) var(--spacing-md) 0;
