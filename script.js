@@ -7,15 +7,28 @@ const themeToggle = document.querySelector('.theme-toggle');
 const root = document.documentElement;
 
 // TODO: Check for saved theme preference and apply it
+const savedTheme = localStorage.getItem('theme') || 'light';
+root.setAttribute('data-theme', savedTheme);
 
 // TODO: Add click event listener to toggle theme
+themeToggle.addEventListener('click', () => {
+    const currentTheme = root.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+
+    themeToggle.classList.remove('spin');
+    void themeToggle.offsetWidth;
+    themeToggle.classList.add('spin');
+});
 
 // ==========================================
 // SMOOTH SCROLLING FOR NAVIGATION
 // ==========================================
 
 document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function(e) {
+    link.addEventListener('click', function (e) {
         e.preventDefault();
 
         const targetId = this.getAttribute('href').substring(1);
@@ -40,8 +53,25 @@ document.querySelectorAll('.nav-link').forEach(link => {
 // ==========================================
 
 // TODO: Create IntersectionObserver for entrance animations
+const observerOptions = {
+    threshold: 0.1
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
 
 // TODO: Observe all elements with .animate-on-scroll class
+
+document.querySelectorAll('.animate-on-scroll, .stagger-children').forEach((element) => {
+    observer.observe(element);
+});
+
 
 // ==========================================
 // PARALLAX EFFECT
@@ -63,7 +93,7 @@ document.querySelectorAll('.nav-link').forEach(link => {
 
 // Add click handlers to project cards for more interactivity
 document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', function() {
+    card.addEventListener('click', function () {
         // You can add modal or expand functionality here
         console.log('Project clicked:', this.querySelector('h3').textContent);
     });
@@ -73,7 +103,7 @@ document.querySelectorAll('.project-card').forEach(card => {
 // NAVBAR SCROLL EFFECT
 // ==========================================
 
-window.addEventListener('scroll', function() {
+window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
         navbar.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';

@@ -7,25 +7,52 @@
   /* Color System - TODO: Add more color variations */
   --color-primary: #667eea;
   --color-primary-dark: #5a67d8;
+  --color-secondary: #48bb78;
+  --color-accent: #f6ad55;
+
   --color-text-primary: #2d3748;
+  --color-text-secondary: #718096;
   --color-background: #ffffff;
   --color-surface: #f7fafc;
+  --color-border: #e2e8f0;
 
   /* Spacing System - TODO: Use consistently throughout */
+  --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+
 
   /* Animation Timing - TODO: Add more timing variations */
+  --transition-fast: 150ms;
   --transition-base: 250ms;
+  --transition-slow: 350ms;
+  --transition-slower: 500ms;
+
+  /* Typography */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 2rem;
+
+  /* Easing Functions */
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 /* Dark Theme - TODO: Complete dark theme variables */
 [data-theme="dark"] {
   --color-text-primary: #f7fafc;
+  --color-text-secondary: #cbd5e0;
   --color-background: #1a202c;
   --color-surface: #2d3748;
+  --color-border: #4a5568;
 }
 
 /* ==========================================
@@ -44,6 +71,9 @@ body {
   color: var(--color-text-primary);
   background: var(--color-background);
   /* TODO: Add smooth transition for theme switching */
+  transition:
+    background-color var(--transition-slow) var(--ease-in-out),
+    color var(--transition-slow) var(--ease-in-out);
 }
 
 .container {
@@ -70,6 +100,27 @@ body {
   z-index: 1000;
   font-size: 1.5rem;
   /* TODO: Add hover effect and transition */
+  transition:
+    transform var(--transition-base) var(--ease-in-out),
+    background-color var(--transition-slow) var(--ease-in-out);
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+@keyframes themeSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.theme-toggle.spin {
+  animation: themeSpin 0.5s var(--ease-in-out);
 }
 
 /* Hide moon in light mode, sun in dark mode */
@@ -91,9 +142,13 @@ body {
   top: 0;
   width: 100%;
   background: var(--color-background);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   z-index: 100;
   padding: var(--spacing-md) 0;
+  transition:
+    background-color var(--transition-slow) var(--ease-in-out),
+    transform var(--transition-base) var(--ease-in-out),
+    box-shadow var(--transition-base) var(--ease-in-out);
 }
 
 .nav-container {
@@ -120,6 +175,26 @@ body {
   text-decoration: none;
   position: relative;
   /* TODO: Add hover effect with underline animation */
+  transition: color var(--transition-base) var(--ease-in-out);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-primary);
+  transition: width var(--transition-base) var(--ease-in-out);
+}
+
+.nav-link:hover {
+  color: var(--color-primary);
+}
+
+.nav-link:hover::after {
+  width: 100%;
 }
 
 /* ==========================================
@@ -166,6 +241,9 @@ body {
   text-decoration: none;
   display: inline-block;
   /* TODO: Add transition for smooth hover effects */
+  transition:
+    transform var(--transition-base) var(--ease-in-out),
+    box-shadow var(--transition-base) var(--ease-in-out);
 }
 
 .btn-primary {
@@ -180,6 +258,10 @@ body {
 }
 
 /* TODO: Add hover states with transform and shadow */
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
 
 /* ==========================================
    SECTIONS
@@ -233,7 +315,17 @@ section {
   border-radius: 0.5rem;
   overflow: hidden;
   /* TODO: Add hover transform and shadow */
+  transition:
+    transform var(--transition-base) var(--ease-in-out),
+    box-shadow var(--transition-base) var(--ease-in-out);
 }
+
+
+.project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
 
 .project-image {
   height: 200px;
@@ -349,7 +441,17 @@ section {
 
 /* TODO: Add fadeInUp animation */
 @keyframes fadeInUp {
+
   /* Your implementation here */
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* TODO: Add typing animation */
@@ -365,15 +467,41 @@ section {
 
 .animate-on-scroll {
   /* TODO: Set initial state for scroll animations */
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 .animate-on-scroll.visible {
   /* TODO: Apply animation when visible */
+  animation: fadeInUp 0.8s var(--ease-out) forwards;
 }
 
 /* Staggered animations */
-.stagger-children > * {
+.stagger-children>* {
   /* TODO: Add staggered delay for children */
+  opacity: 0;
+  animation: fadeInUp 0.6s var(--ease-out) forwards;
+  animation-play-state: paused;
+}
+
+.stagger-children.visible>* {
+  animation-play-state: running;
+}
+
+.stagger-children>*:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.stagger-children>*:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.stagger-children>*:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.stagger-children>*:nth-child(4) {
+  animation-delay: 0.4s;
 }
 
 /* ==========================================
