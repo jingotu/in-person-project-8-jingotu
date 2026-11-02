@@ -406,6 +406,10 @@ section {
   transition: background-color var(--transition-slow) var(--ease-in-out);
 }
 
+.skill-card:hover {
+  background-color: var(--color-border);
+}
+
 .skill-icon {
   font-size: 3rem;
   margin-bottom: var(--spacing-md);
