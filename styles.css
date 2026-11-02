@@ -193,7 +193,8 @@ body {
   color: var(--color-primary);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 
@@ -263,6 +264,10 @@ body {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
 /* ==========================================
    SECTIONS
    ========================================== */
@@ -316,6 +321,7 @@ section {
   overflow: hidden;
   /* TODO: Add hover transform and shadow */
   transition:
+    background-color var(--transition-slow) var(--ease-in-out),
     transform var(--transition-base) var(--ease-in-out),
     box-shadow var(--transition-base) var(--ease-in-out);
 }
@@ -343,7 +349,19 @@ section {
 }
 
 .image-overlay {
+
   /* TODO: Add overlay effect on hover */
+  .image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .project-card:hover .image-overlay {
+    opacity: 1;
+  }
 }
 
 .project-card h3 {
@@ -387,6 +405,7 @@ section {
   border-radius: 0.5rem;
   text-align: center;
   /* TODO: Add hover effect */
+  transition: background-color var(--transition-slow) var(--ease-in-out);
 }
 
 .skill-icon {
